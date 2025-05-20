@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscription - JB CORP</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #E63946;
+      --beige: #FFFAF3;
+      --black: #1D1D1B;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--beige);
+      font-family: 'Montserrat', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .register-container {
+      background: #fff;
+      border-radius: 2.1rem;
+      box-shadow: 0 8px 36px rgba(27,27,27,0.07);
+      max-width: 410px;
+      width: 97vw;
+      margin: 2.4rem 0;
+      padding: 2.2rem 1.1rem 2.2rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.8rem;
+    }
+    h1 {
+      font-size: 1.28rem;
+      font-weight: 700;
+      color: var(--black);
+      margin: 0 0 1.2rem 0;
+      text-align: center;
+      letter-spacing: 0.6px;
+    }
+    label {
+      font-size: 1.04rem;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 0.14rem;
+      margin-top: 0.9rem;
+      display: block;
+    }
+    input {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.03rem;
+      background: #f7f7fa;
+      border: 1.3px solid #e9e9e9;
+      border-radius: 0.7rem;
+      padding: 0.9rem 1rem;
+      margin-bottom: 0.5rem;
+      width: 100%;
+      box-sizing: border-box;
+      color: var(--black);
+      outline: none;
+      transition: border 0.17s;
+    }
+    input:focus {
+      border: 1.5px solid var(--red);
+      background: #fff;
+    }
+    button {
+      margin-top: 1.6rem;
+      width: 100%;
+      padding: 1.08rem;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 1.1rem;
+      font-weight: 700;
+      font-size: 1.13rem;
+      cursor: pointer;
+      letter-spacing: 0.13px;
+      transition: background 0.14s, transform 0.12s;
+      box-shadow: 0 2px 12px rgba(230,57,70,0.07);
+    }
+    button:hover {
+      background: #c82b36;
+      transform: scale(1.012);
+    }
+    #message {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 500;
+      min-height: 1.3em;
+      color: var(--red);
+    }
+    @media (max-width: 600px) {
+      .register-container { padding: 1.15rem 0.3rem 1.3rem 0.3rem;}
+      h1 { font-size: 1.07rem;}
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h1>Créer un compte</h1>
+    <form id="registerForm" autocomplete="off">
+      <label for="nom">Nom</label>
+      <input type="text" id="nom" required />
+
+      <label for="prenom">Prénom</label>
+      <input type="text" id="prenom" required />
+
+      <label for="dateNaissance">Date de naissance</label>
+      <input type="date" id="dateNaissance" required />
+
+      <label for="taille">Taille (cm)</label>
+      <input type="number" id="taille" min="0" max="250" required />
+
+      <label for="poids">Poids (kg)</label>
+      <input type="number" id="poids" min="0" max="300" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" required />
+
+      <label for="password">Mot de passe</label>
+      <input type="password" id="password" required />
+
+      <button type="submit">S'inscrire</button>
+      <div id="message"></div>
+    </form>
+  </div>
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const nom = document.getElementById('nom').value;
+      const prenom = document.getElementById('prenom').value;
+      const dateNaissance = document.getElementById('dateNaissance').value;
+      const taille = document.getElementById('taille').value;
+      const poids = document.getElementById('poids').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const msg = document.getElementById('message');
+
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nom, prenom, dateNaissance, taille, poids, email, password })
+      });
+
+      const data = await res.json();
+      msg.textContent = data.message;
+      msg.style.color = res.ok ? 'green' : 'red';
+    });
+  </script>
+</body>
+</html>

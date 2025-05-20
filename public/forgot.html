@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mot de passe oublié</title>
+  <style>
+    body {
+      background: #f8f8fb;
+      font-family: 'Inter', Arial, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: #fff;
+      border-radius: 2rem;
+      box-shadow: 0 6px 32px rgba(120, 132, 254, 0.10);
+      max-width: 370px;
+      width: 92%;
+      padding: 2rem 1.5rem 2.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #313867;
+      margin: 0 0 0.2em 0;
+      letter-spacing: -1px;
+      text-align: center;
+    }
+    .desc {
+      font-size: 1rem;
+      color: #8b98b6;
+      text-align: center;
+      margin-bottom: 1.2rem;
+    }
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      margin-top: 0.3rem;
+    }
+    label {
+      color: #7e8ffc;
+      font-weight: 600;
+      font-size: 0.97rem;
+      margin-bottom: 0.1rem;
+    }
+    input[type=email] {
+      border: none;
+      background: #f2f4fa;
+      padding: 0.9rem 1rem;
+      font-size: 1.03rem;
+      border-radius: 1rem;
+      color: #313867;
+      font-weight: 500;
+      outline: none;
+      transition: box-shadow 0.2s;
+      box-shadow: 0 1px 2px #ecf0fd;
+    }
+    input:focus {
+      box-shadow: 0 0 0 2px #b4bffd;
+      background: #eef1ff;
+    }
+    button {
+      margin-top: 0.7rem;
+      padding: 1rem;
+      background: linear-gradient(90deg, #7584fc, #b2b6fc 90%);
+      color: #fff;
+      border: none;
+      border-radius: 1.3rem;
+      font-weight: bold;
+      font-size: 1.12rem;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(120,132,254,0.09);
+      letter-spacing: 0.2px;
+      transition: background 0.17s, transform 0.13s;
+    }
+    button:hover {
+      background: linear-gradient(90deg, #6168c7, #7e8ffc 90%);
+      transform: scale(1.02);
+    }
+    #message {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 500;
+      min-height: 1.3em;
+      color: #8b98b6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Mot de passe oublié ?</h2>
+    <div class="desc">Entre ton email, tu recevras un lien pour choisir un nouveau mot de passe.</div>
+    <form id="forgotForm">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="monmail@email.com" required />
+      <button type="submit">Recevoir le lien</button>
+      <div id="message"></div>
+    </form>
+  </div>
+  <script>
+    document.getElementById('forgotForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const msg = document.getElementById('message');
+
+      msg.textContent = 'Envoi en cours...';
+
+      const res = await fetch('/api/forgot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await res.json();
+      msg.textContent = data.message;
+      msg.style.color = res.ok ? 'green' : 'red';
+    });
+  </script>
+</body>
+</html>

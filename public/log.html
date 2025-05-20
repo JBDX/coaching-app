@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajouter une séance - JB CORP</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #E63946;
+      --beige: #FFFAF3;
+      --black: #1D1D1B;
+      --grey: #f7f7fa;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--beige);
+      font-family: 'Montserrat', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .log-container {
+      background: #fff;
+      border-radius: 2.1rem;
+      box-shadow: 0 8px 36px rgba(27,27,27,0.07);
+      max-width: 410px;
+      width: 97vw;
+      margin: 2rem 0;
+      padding: 2.2rem 1.1rem 2.2rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.8rem;
+    }
+    h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--black);
+      margin: 0 0 1.2rem 0;
+      text-align: center;
+      letter-spacing: 0.6px;
+    }
+    label {
+      font-size: 1.04rem;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 0.13rem;
+      margin-top: 0.8rem;
+      display: block;
+    }
+    input, select, textarea {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.03rem;
+      background: #f7f7fa;
+      border: 1.3px solid #e9e9e9;
+      border-radius: 0.7rem;
+      padding: 0.9rem 1rem;
+      margin-bottom: 0.5rem;
+      width: 100%;
+      box-sizing: border-box;
+      color: var(--black);
+      outline: none;
+      transition: border 0.17s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border: 1.5px solid var(--red);
+      background: #fff;
+    }
+    .ex-block {
+      background: #f8f8fc;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-bottom: 1.1rem;
+      box-shadow: 0 1px 7px rgba(27,27,27,0.04);
+      margin-top: 1.1rem;
+    }
+    .ex-title {
+      font-weight: 700;
+      color: var(--red);
+      margin-bottom: 0.5rem;
+      font-size: 1.03rem;
+      letter-spacing: 0.02em;
+    }
+    .serie-block {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 0.5rem;
+    }
+    .serie-block input {
+      flex: 1 1 30%;
+      margin-bottom: 0;
+      padding: 0.47rem 0.5rem;
+      font-size: 1rem;
+      border-radius: 0.5rem;
+    }
+    .add-serie, .add-ex {
+      background: none;
+      border: 1.4px solid var(--red);
+      color: var(--red);
+      border-radius: 0.8rem;
+      font-size: 0.97rem;
+      font-weight: 600;
+      padding: 0.4rem 1.1rem;
+      margin: 0.4rem 0;
+      cursor: pointer;
+      transition: background 0.14s, color 0.13s;
+    }
+    .add-serie:hover, .add-ex:hover {
+      background: var(--red);
+      color: #fff;
+    }
+    .btn-validate {
+      margin-top: 1.2rem;
+      width: 100%;
+      padding: 1.1rem;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 1.1rem;
+      font-weight: 700;
+      font-size: 1.11rem;
+      cursor: pointer;
+      letter-spacing: 0.11px;
+      transition: background 0.14s, transform 0.12s;
+      box-shadow: 0 2px 12px rgba(230,57,70,0.07);
+    }
+    .btn-validate:hover {
+      background: #c82b36;
+      transform: scale(1.012);
+    }
+    .divider {
+      margin: 1.2rem 0 0.5rem 0;
+      border: none;
+      border-top: 1.3px solid #eee;
+    }
+    @media (max-width: 600px) {
+      .log-container { padding: 1.15rem 0.3rem 1.3rem 0.3rem;}
+      h1 { font-size: 1.09rem;}
+    }
+  </style>
+</head>
+<body>
+  <div class="log-container">
+    <h1>Ajouter une séance</h1>
+    <form id="logForm">
+      <label for="date">Date</label>
+      <input type="date" id="date" required />
+
+      <label for="motivation">Motivation (1-10)</label>
+      <input type="number" id="motivation" min="1" max="10" required />
+
+      <label for="fatigue">Fatigue ressentie (1-10)</label>
+      <input type="number" id="fatigue" min="1" max="10" required />
+
+      <label for="preNote">Douleurs / gênes pré-séance</label>
+      <textarea id="preNote" rows="2" placeholder="Aucune..."></textarea>
+
+      <label for="session">Type de séance</label>
+      <select id="session" onchange="loadTemplate()" required>
+        <option value="">-- Sélectionner --</option>
+        <option value="upper1">Upper 1</option>
+        <option value="upper2">Upper 2</option>
+        <option value="lower1">Lower 1</option>
+        <option value="lower2">Lower 2</option>
+      </select>
+
+      <div id="exercises"></div>
+      <button type="button" class="add-ex" onclick="addExercise()">+ Ajouter un exercice</button>
+
+      <hr class="divider">
+
+      <label for="postFatigue">Fatigue post-séance (1-10)</label>
+      <input type="number" id="postFatigue" min="1" max="10" />
+
+      <label for="postNote">Douleurs / gênes post-séance</label>
+      <textarea id="postNote" rows="2" placeholder="Aucune..."></textarea>
+
+      <button type="submit" class="btn-validate">Valider la séance</button>
+    </form>
+  </div>
+  <script>
+    // Templates d'exercices par séance
+    const templates = {
+      upper1: [
+        "Smith incline chest press",
+        "Machine shoulder press",
+        "Lat pulldown",
+        "Seated machine row",
+        "A1. Elevations latérales",
+        "A2. Shrugs",
+        "B1. Hammer curl",
+        "B2. Triceps OHE"
+      ],
+      upper2: [
+        "Neutral grip pull-ups",
+        "Seated cable row",
+        "Db chest press",
+        "Db shoulder press",
+        "A1. Pec deck",
+        "A2. Rear delt fly",
+        "B1. Hammer preacher curl",
+        "B2. Triceps kickback"
+      ],
+      lower1: [
+        "Squat",
+        "RDL",
+        "Walking lunges",
+        "Leg extension",
+        "Leg curl",
+        "Extensions mollet"
+      ],
+      lower2: [
+        "Front squat",
+        "Hip thrust",
+        "Side squats",
+        "Leg extension",
+        "Leg curl",
+        "Extensions mollet"
+      ]
+    };
+
+    // Prérremplir la date aujourd'hui
+    window.onload = () => {
+      document.getElementById('date').value = new Date().toISOString().split('T')[0];
+    };
+
+    function loadTemplate() {
+      const selected = document.getElementById('session').value;
+      document.getElementById('exercises').innerHTML = '';
+      if (templates[selected]) {
+        templates[selected].forEach(name => {
+          addExercise(name);
+        });
+      }
+    }
+
+    function addExercise(name = '') {
+      const container = document.getElementById('exercises');
+      const exDiv = document.createElement('div');
+      exDiv.className = 'ex-block';
+
+      exDiv.innerHTML = `
+        <div class="ex-title">Exercice</div>
+        <input type="text" class="exercise-name" value="${name}" required />
+        <div class="series-container"></div>
+        <button type="button" class="add-serie" onclick="addSerie(this)">+ Ajouter une série</button>
+        <label>Note de fin d'exercice</label>
+        <textarea rows="1" class="exercise-note" placeholder="Optionnel..."></textarea>
+      `;
+      container.appendChild(exDiv);
+
+      // Ajoute une série vide par défaut si exercice pré-rempli
+      if(name) {
+        const btn = exDiv.querySelector('.add-serie');
+        addSerie(btn);
+      }
+    }
+
+    function addSerie(button) {
+      const container = button.previousElementSibling;
+      const serieDiv = document.createElement('div');
+      serieDiv.className = 'serie-block';
+      serieDiv.innerHTML = `
+        <input type="number" class="serie-reps" placeholder="Reps" min="1" />
+        <input type="number" class="serie-weight" placeholder="Poids (kg)" min="0" />
+        <input type="number" class="serie-rpe" placeholder="RPE" min="1" max="10" step="0.5" />
+      `;
+      container.appendChild(serieDiv);
+    }
+
+    document.getElementById('logForm').onsubmit = async function(e) {
+      e.preventDefault();
+
+      // Collecte des infos
+      const date = document.getElementById('date').value;
+      const motivation = document.getElementById('motivation').value;
+      const fatigue = document.getElementById('fatigue').value;
+      const preNote = document.getElementById('preNote').value;
+      const postFatigue = document.getElementById('postFatigue').value;
+      const postNote = document.getElementById('postNote').value;
+      const session = document.getElementById('session').value;
+
+      const exercises = [];
+      const blocks = document.querySelectorAll('.ex-block');
+      blocks.forEach(block => {
+        const name = block.querySelector('.exercise-name').value;
+        const note = block.querySelector('.exercise-note').value;
+        const seriesNodes = block.querySelectorAll('.serie-block');
+        const series = Array.from(seriesNodes).map(serie => ({
+          reps: serie.querySelector('.serie-reps').value,
+          weight: serie.querySelector('.serie-weight').value,
+          rpe: serie.querySelector('.serie-rpe').value
+        }));
+        exercises.push({ nom: name, note, series });
+      });
+
+      // Crée le payload
+      const payload = {
+        date,
+        motivation,
+        fatigue,
+        preNote,
+        postFatigue,
+        postNote,
+        session,
+        exercices: exercises
+      };
+
+      // Envoi au backend
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/logs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        alert('Séance enregistrée avec succès !');
+        window.location.href = '/dashboard.html';
+      } else {
+        alert('Erreur lors de la sauvegarde.');
+      }
+    };
+
+    // Sécurité : si pas connecté, retour login
+    if (!localStorage.getItem('token')) {
+      window.location.href = '/login.html';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monitoring - JB CORP</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --red: #e63946;
+        --beige: #fffaf3;
+        --black: #1d1d1b;
+        --blue: #669bbc;
+        --blue2: #d6e6f2;
+        --green: #eafbe8;
+        --yellow: #fffbe5;
+        --grey: #f6f7fa;
+      }
+      body {
+        margin: 0;
+        background: var(--beige);
+        font-family: "Montserrat", Arial, sans-serif;
+        color: var(--black);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+      }
+      h1 {
+        margin: 2.2rem 0 1.2rem 0;
+        font-size: 1.35rem;
+        font-weight: 700;
+        text-align: center;
+      }
+      .monitor-header {
+        width: 100%;
+        max-width: 800px;
+        display: flex;
+        align-items: center;
+        gap: 1.3rem;
+        justify-content: center;
+        margin-bottom: 2.3rem;
+      }
+      .monitor-header label {
+        font-weight: 600;
+      }
+      .monitor-header input[type="date"] {
+        padding: 0.6rem 1rem;
+        border-radius: 0.7rem;
+        border: 1.1px solid #d0d0d0;
+        background: #fff;
+        font-size: 1rem;
+        font-family: "Montserrat", Arial, sans-serif;
+        outline: none;
+        transition: border 0.15s;
+      }
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 2rem;
+        width: 100%;
+        max-width: 1020px;
+        margin: 0 auto 2.1rem auto;
+        box-sizing: border-box;
+      }
+      .card-day {
+        background: #fff;
+        border-radius: 1.3rem;
+        box-shadow: 0 2px 18px rgba(27, 27, 27, 0.08);
+        padding: 1.4rem 1rem 1.2rem 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.6rem;
+        min-width: 0; /* important pour grid ! */
+        min-height: 120px;
+        transition: box-shadow 0.13s, transform 0.11s;
+      }
+      .card-day .icon {
+        font-size: 2.1rem;
+        margin-bottom: 0.3rem;
+        color: var(--red);
+      }
+      .retour-btn {
+        display: block;
+        margin: 2.4rem auto 1.3rem auto;
+        background: transparent;
+        color: var(--red);
+        border: 2px solid var(--red);
+        border-radius: 1.2rem;
+        font-weight: 700;
+        font-size: 1.09rem;
+        padding: 0.82rem 1.5rem;
+        cursor: pointer;
+        transition: background 0.13s, color 0.13s;
+      }
+      .retour-btn:hover {
+        background: var(--red);
+        color: #fff;
+      }
+
+      .card-title {
+        font-weight: 700;
+        font-size: 1 0.06rem;
+        color: var(--black);
+        margin-bottom: 0.22rem;
+        text-align: center;
+      }
+      .card-input {
+        border: none;
+        background: #f6f7fa;
+        padding: 0.6rem 0.8rem;
+        border-radius: 0.8rem;
+        font-size: 1.17rem;
+        width: 80%;
+        text-align: center;
+        font-family: "Montserrat", Arial, sans-serif;
+        margin-bottom: 0.16rem;
+        font-weight: 700;
+        color: var(--black);
+        outline: none;
+        box-shadow: 0 1px 4px rgba(230, 57, 70, 0.03);
+        transition: border 0.12s, background 0.12s;
+      }
+      .card-input:focus {
+        background: #fff0f2;
+        border: 1.3px solid var(--red);
+      }
+      .unit-label {
+        font-size: 0.93rem;
+        color: #a0a0a0;
+      }
+      .save-btn {
+        margin: 2.1rem auto 1.5rem auto;
+        display: block;
+        background: var(--red);
+        color: #fff;
+        border: none;
+        border-radius: 1.1rem;
+        font-weight: 700;
+        font-size: 1.15rem;
+        padding: 1rem 2.1rem;
+        cursor: pointer;
+        letter-spacing: 0.03em;
+        box-shadow: 0 2px 14px rgba(230, 57, 70, 0.06);
+        transition: background 0.14s, transform 0.11s;
+      }
+      .save-btn:hover {
+        background: #c82b36;
+        transform: scale(1.018);
+      }
+      @media (max-width: 900px) {
+        .cards-grid {
+          grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+          gap: 1.1rem;
+          max-width: 98vw;
+        }
+      }
+      @media (max-width: 600px) {
+        .cards-grid {
+          grid-template-columns: 1fr;
+          gap: 1.1rem;
+          padding: 0 0.2rem;
+        }
+        .card-day {
+          max-width: 98vw;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Monitoring du jour</h1>
+    <div class="monitor-header">
+      <label for="date">Date du suivi :</label>
+      <input type="date" id="date" />
+    </div>
+    <form id="monitorForm">
+      <div class="cards-grid">
+        <div class="card-day">
+          <div class="icon">📅</div>
+          <div class="card-title">Séance</div>
+          <select class="card-input" id="seance">
+            <option value=""></option>
+            <option>Upper 1</option>
+            <option>Upper 2</option>
+            <option>Lower 1</option>
+            <option>Lower 2</option>
+            <option>Repos</option>
+          </select>
+        </div>
+        <div class="card-day">
+          <div class="icon">⚖️</div>
+          <div class="card-title">Poids</div>
+          <input
+            class="card-input"
+            id="poids"
+            type="number"
+            min="0"
+            step="0.1"
+            placeholder="-"
+          />
+          <span class="unit-label">kg</span>
+        </div>
+        <div class="card-day">
+          <div class="icon">😴</div>
+          <div class="card-title">Sommeil</div>
+          <input
+            class="card-input"
+            id="sommeil"
+            type="number"
+            min="0"
+            max="24"
+            step="0.1"
+            placeholder="-"
+          />
+          <span class="unit-label">heures</span>
+        </div>
+        <div class="card-day">
+          <div class="icon">👣</div>
+          <div class="card-title">Nombre de pas</div>
+          <input
+            class="card-input"
+            id="pas"
+            type="number"
+            min="0"
+            step="1"
+            placeholder="-"
+          />
+          <span class="unit-label">pas</span>
+        </div>
+        <div class="card-day">
+          <div class="icon">❤️</div>
+          <div class="card-title">BPM au réveil</div>
+          <input
+            class="card-input"
+            id="bpm"
+            type="number"
+            min="0"
+            step="1"
+            placeholder="-"
+          />
+          <span class="unit-label">bpm</span>
+        </div>
+        <div class="card-day">
+          <div class="icon">😵‍💫</div>
+          <div class="card-title">Stress</div>
+          <input
+            class="card-input"
+            id="stress"
+            type="number"
+            min="1"
+            max="10"
+            placeholder="-"
+          />
+          <span class="unit-label">/10</span>
+        </div>
+      </div>
+      <button class="save-btn" type="submit">Enregistrer la journée</button>
+      <div
+        id="monitorMsg"
+        style="text-align: center; margin-top: 1rem; min-height: 1.5em"
+      ></div>
+    </form>
+    <script>
+      // Pré-remplir la date à aujourd'hui
+      window.onload = function () {
+        document.getElementById("date").value = new Date()
+          .toISOString()
+          .split("T")[0];
+      };
+
+      document.getElementById("monitorForm").onsubmit = function (e) {
+        e.preventDefault();
+        // Tu peux adapter ici pour sauvegarder vers l’API ou localStorage
+        document.getElementById("monitorMsg").textContent =
+          "Données sauvegardées (simulation)";
+        setTimeout(
+          () => (document.getElementById("monitorMsg").textContent = ""),
+          1800
+        );
+      };
+    </script>
+    <button class="retour-btn" onclick="window.location.href='dashboard.html'">
+      &lt; Retour dashboard
+    </button>
+  </body>
+</html>

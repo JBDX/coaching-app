@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - JB CORP</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --red: #e63946;
+        --beige: #fffaf3;
+        --black: #1d1d1b;
+        --grey: #f7f7fa;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Montserrat", Arial, sans-serif;
+        background: var(--beige);
+      }
+      .dashboard-main {
+        width: 100vw;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: var(--beige);
+        padding: 2.2rem 0 2rem 0;
+      }
+      .greeting {
+        font-size: 1.33rem;
+        font-weight: 700;
+        color: var(--red);
+        margin-bottom: 0.7rem;
+        letter-spacing: 0.01em;
+        text-align: center;
+      }
+      .title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--black);
+        margin-bottom: 2.3rem;
+        letter-spacing: -1px;
+        text-align: center;
+        line-height: 1.1;
+      }
+
+      .cards-row {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        margin: 2.1rem 0 2.5rem 0;
+        flex-wrap: wrap;
+      }
+      .card-feature {
+        background: #fff;
+        border-radius: 1.4rem;
+        box-shadow: 0 2px 18px rgba(27, 27, 27, 0.08);
+        padding: 1.5rem 1.5rem 1.2rem 1.5rem;
+        min-width: 200px;
+        max-width: 250px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        transition: box-shadow 0.13s, transform 0.11s, background 0.13s;
+        border: 2px solid transparent;
+        margin-bottom: 1.3rem;
+      }
+      .card-feature:hover {
+        box-shadow: 0 7px 28px rgba(230, 57, 70, 0.1);
+        border: 2px solid var(--red);
+        background: #fff5f6;
+        transform: translateY(-3px) scale(1.03);
+      }
+      .card-emoji {
+        font-size: 2.2rem;
+        margin-bottom: 0.3rem;
+      }
+      .card-title {
+        font-weight: 700;
+        color: var(--red);
+        font-size: 1.13rem;
+        margin-bottom: 0.25rem;
+        text-align: center;
+      }
+      .card-desc {
+        font-size: 1.01rem;
+        color: #6d6d6d;
+        text-align: center;
+      }
+
+      .dashboard-btn-row {
+        display: flex;
+        gap: 1.4rem;
+        justify-content: center;
+        margin-top: 2.2rem;
+        flex-wrap: wrap;
+      }
+      .dashboard-btn {
+        background: var(--red);
+        color: #fff;
+        border: none;
+        border-radius: 1.1rem;
+        font-weight: 700;
+        font-size: 1.08rem;
+        padding: 1rem 1.7rem;
+        cursor: pointer;
+        letter-spacing: 0.03em;
+        box-shadow: 0 2px 10px rgba(230, 57, 70, 0.06);
+        transition: background 0.14s, transform 0.1s;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+      }
+      .dashboard-btn svg {
+        width: 1.6rem;
+        height: 1.6rem;
+        color: #fff;
+        margin-bottom: 0;
+        margin-right: 0.25rem;
+      }
+      .dashboard-btn:hover {
+        background: #c82b36;
+        transform: scale(1.04);
+      }
+      @media (max-width: 950px) {
+        .cards-row {
+          flex-wrap: wrap;
+          gap: 1.3rem;
+        }
+        .dashboard-main {
+          padding: 1.2rem 0 1.2rem 0;
+        }
+        .title {
+          font-size: 1.25rem;
+        }
+      }
+      @media (max-width: 700px) {
+        .cards-row {
+          flex-direction: column;
+          align-items: center;
+          gap: 1.2rem;
+        }
+        .dashboard-btn-row {
+          flex-direction: column;
+          gap: 1.1rem;
+        }
+        .dashboard-main {
+          padding-top: 1rem;
+        }
+      }
+
+      /* Modale Compte */
+      .modal-bg {
+        position: fixed;
+        inset: 0;
+        background: rgba(20, 20, 20, 0.18);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 200;
+      }
+      .modal-compte-card {
+        background: #fff;
+        border-radius: 2rem;
+        box-shadow: 0 8px 40px rgba(27, 27, 27, 0.12);
+        max-width: 430px;
+        width: 96vw;
+        padding: 2.2rem 1.6rem 2rem 1.6rem;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        margin-top: 5rem;
+        gap: 1.1rem;
+      }
+      .modal-close {
+        position: absolute;
+        top: 1.1rem;
+        right: 1.4rem;
+        background: none;
+        border: none;
+        color: var(--red);
+        font-size: 2.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        z-index: 12;
+        line-height: 1;
+        padding: 0;
+      }
+
+      .modal-compte-title {
+        font-size: 1.38rem;
+        font-weight: 800;
+        color: var(--black);
+        margin-bottom: 0.8rem;
+        text-align: center;
+        letter-spacing: -1px;
+      }
+      .mod-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 0.46rem;
+      }
+      .mod-fields label {
+        font-size: 1.04rem;
+        font-weight: 600;
+        color: var(--black);
+        margin-bottom: 0.13rem;
+        margin-top: 0.2rem;
+      }
+      .mod-fields input {
+        font-family: "Montserrat", Arial, sans-serif;
+        font-size: 1.01rem;
+        background: #f7f7fa;
+        border: 1.2px solid #e9e9e9;
+        border-radius: 0.7rem;
+        padding: 0.7rem 1rem;
+        margin-bottom: 0.12rem;
+        width: 100%;
+        box-sizing: border-box;
+        color: var(--black);
+        outline: none;
+        transition: border 0.15s;
+      }
+      .mod-fields input:focus {
+        border: 1.5px solid var(--red);
+        background: #fff;
+      }
+      .mod-stat {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 0.8rem;
+        margin: 1.2rem 0 0.6rem 0;
+      }
+      .stat-label {
+        font-weight: 500;
+        font-size: 1.01rem;
+        color: #444;
+      }
+      .stat-value {
+        background: var(--red);
+        color: #fff;
+        border-radius: 1.1rem;
+        padding: 0.18rem 0.83rem;
+        font-size: 1.08rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-left: 0.3rem;
+      }
+      .mod-main-btn {
+        margin-top: 1.4rem;
+        width: 100%;
+        padding: 1rem;
+        background: var(--red);
+        color: #fff;
+        border: none;
+        border-radius: 1.1rem;
+        font-weight: 700;
+        font-size: 1.14rem;
+        cursor: pointer;
+        letter-spacing: 0.13px;
+        box-shadow: 0 2px 12px rgba(230, 57, 70, 0.07);
+        transition: background 0.13s, transform 0.1s;
+      }
+      .mod-main-btn:hover {
+        background: #c82b36;
+        transform: scale(1.012);
+      }
+      .mod-msg {
+        margin-top: 0.9rem;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+        min-height: 1.3em;
+        color: var(--red);
+      }
+      .dashboard-widget-graph {
+        background: #fff;
+        border-radius: 1.5rem;
+        box-shadow: 0 2px 16px rgba(27, 27, 27, 0.09);
+        max-width: 380px;
+        width: 95vw;
+        margin: 0 auto 2.3rem auto;
+        padding: 1.3rem 1.2rem 1.2rem 1.2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .widget-title {
+        font-weight: 700;
+        color: var(--red);
+        font-size: 1.1rem;
+        margin-bottom: 0.8rem;
+        letter-spacing: 0.01em;
+      }
+      @media (max-width: 600px) {
+        .dashboard-widget-graph {
+          padding: 0.8rem 0.2rem 1rem 0.2rem;
+          max-width: 99vw;
+        }
+      }
+
+      @media (max-width: 650px) {
+        .modal-compte-card {
+          padding: 1.05rem 0.3rem 1.3rem 0.3rem;
+          margin-top: 1.5rem; /* Un peu moins sur mobile */
+        }
+        .modal-compte-title {
+          font-size: 1.1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dashboard-main">
+      <div id="greeting" class="greeting"></div>
+      <div class="title">Bienvenue sur ton dashboard JB CORP</div>
+
+      <div class="cards-row">
+        <div
+          class="card-feature"
+          onclick="window.location.href='monitoring.html'"
+        >
+          <div class="card-emoji">📈</div>
+          <div class="card-title">Monitoring</div>
+          <div class="card-desc">
+            Qualité de sommeil, fatigue, douleurs, bien-être général...
+          </div>
+        </div>
+        <div
+          class="card-feature"
+          onclick="window.location.href='mensurations.html'"
+        >
+          <div class="card-emoji">📏</div>
+          <div class="card-title">Mensurations</div>
+          <div class="card-desc">
+            Tour de taille, poids, évolution physique…
+          </div>
+        </div>
+        <div class="card-feature" onclick="window.location.href='diet.html'">
+          <div class="card-emoji">🥗</div>
+          <div class="card-title">Diet</div>
+          <div class="card-desc">Suivi nutritionnel, macros, hydratation…</div>
+        </div>
+      </div>
+      <div class="dashboard-widget-graph">
+        <div class="widget-title">Évolution du poids (démo)</div>
+        <canvas id="weightChart" width="350" height="160"></canvas>
+      </div>
+      <div class="dashboard-btn-row">
+        <button class="dashboard-btn" onclick="window.location.href='log.html'">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v8M8 12h8" stroke-linecap="round" />
+          </svg>
+          Ajouter séance
+        </button>
+        <button
+          class="dashboard-btn"
+          onclick="window.location.href='historique.html'"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path
+              d="M12 8v4l3 3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Historique
+        </button>
+        <button class="dashboard-btn" onclick="openCompte()">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="8" r="4" />
+            <path d="M2 20c0-4 8-6 10-6s10 2 10 6" />
+          </svg>
+          Compte
+        </button>
+        <button class="dashboard-btn" onclick="logout()">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M16 17v1a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"
+            />
+            <polyline points="8 12 16 12 12 16" />
+            <polyline points="12 16 16 12 12 8" />
+          </svg>
+          Déconnexion
+        </button>
+      </div>
+    </div>
+
+    <!-- Modale Compte -->
+    <div id="modalCompte" class="modal-bg" style="display: none">
+      <div class="modal-compte-card">
+        <button class="modal-close" onclick="closeCompte()">&times;</button>
+        <div class="modal-compte-title">Mon compte</div>
+        <form id="compteForm" autocomplete="off">
+          <div class="mod-fields">
+            <label>Email</label>
+            <input type="email" id="userEmail" disabled />
+
+            <label>Nom</label>
+            <input type="text" id="userNom" />
+
+            <label>Prénom</label>
+            <input type="text" id="userPrenom" />
+
+            <label>Date de naissance</label>
+            <input type="date" id="userNaissance" />
+
+            <label>Taille (cm)</label>
+            <input type="number" id="userTaille" min="0" max="250" />
+
+            <label>Poids (kg)</label>
+            <input type="number" id="userPoids" min="0" max="300" />
+          </div>
+          <div class="mod-stat">
+            <span class="stat-label">Séances réalisées :</span>
+            <span class="stat-value" id="userSeances">0</span>
+          </div>
+          <button type="submit" class="mod-main-btn">
+            Enregistrer les modifications
+          </button>
+          <div id="compteMsg" class="mod-msg"></div>
+        </form>
+      </div>
+    </div>
+    <script>
+      // Greeting prénom
+      window.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+        fetch("/api/me", {
+          headers: { Authorization: "Bearer " + token },
+        })
+          .then((r) => r.json())
+          .then((data) => {
+            let prenom = data.prenom || "";
+            if (prenom.length > 0)
+              prenom = prenom[0].toUpperCase() + prenom.slice(1);
+            document.getElementById("greeting").textContent =
+              "Salut " + prenom + " !";
+          });
+      });
+      // Déconnexion
+      function logout() {
+        localStorage.removeItem("token");
+        window.location.href = "/login.html";
+      }
+      // Compte
+      function openCompte() {
+        fetchUserInfos();
+        document.getElementById("modalCompte").style.display = "flex";
+      }
+      function closeCompte() {
+        document.getElementById("modalCompte").style.display = "none";
+      }
+      async function fetchUserInfos() {
+        const token = localStorage.getItem("token");
+        fetch("/api/me", {
+          headers: { Authorization: "Bearer " + token },
+        })
+          .then((r) => r.json())
+          .then((data) => {
+            document.getElementById("userEmail").value = data.email || "";
+            document.getElementById("userNom").value = data.nom || "";
+            document.getElementById("userPrenom").value = data.prenom || "";
+            document.getElementById("userNaissance").value =
+              data.dateNaissance || "";
+            document.getElementById("userTaille").value = data.taille || "";
+            document.getElementById("userPoids").value = data.poids || "";
+          });
+        fetch("/api/logs", {
+          headers: { Authorization: "Bearer " + token },
+        })
+          .then((r) => r.json())
+          .then((data) => {
+            document.getElementById("userSeances").textContent = Array.isArray(
+              data
+            )
+              ? data.length
+              : 0;
+          });
+      }
+      // Mise à jour compte
+      document.getElementById("compteForm").onsubmit = async function (e) {
+        e.preventDefault();
+        const nom = document.getElementById("userNom").value;
+        const prenom = document.getElementById("userPrenom").value;
+        const dateNaissance = document.getElementById("userNaissance").value;
+        const taille = document.getElementById("userTaille").value;
+        const poids = document.getElementById("userPoids").value;
+        const token = localStorage.getItem("token");
+        const msg = document.getElementById("compteMsg");
+        msg.textContent = "Mise à jour...";
+        const res = await fetch("/api/updateMe", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({ nom, prenom, dateNaissance, taille, poids }),
+        });
+        const data = await res.json();
+        msg.textContent = data.message;
+        msg.style.color = res.ok ? "green" : "var(--red)";
+      };
+      // Redirige si pas connecté
+      if (!localStorage.getItem("token")) {
+        window.location.href = "/login.html";
+      }
+      // Exemple de données de poids (à remplacer par les vraies données)
+      const demoLabels = ["J1", "J2", "J3", "J4", "J5", "J6", "J7"];
+      const demoData = [82, 81.5, 81.8, 81.2, 81.7, 81.4, 81.1];
+
+      const ctx = document.getElementById("weightChart").getContext("2d");
+      const weightChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: demoLabels,
+          datasets: [
+            {
+              label: "Poids (kg)",
+              data: demoData,
+              backgroundColor: "rgba(230,57,70,0.15)",
+              borderColor: "rgba(230,57,70,0.98)",
+              borderWidth: 2.4,
+              pointRadius: 3.5,
+              pointBackgroundColor: "rgba(230,57,70,0.98)",
+              tension: 0.3,
+              fill: true,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+          },
+          scales: {
+            x: { grid: { display: false } },
+            y: { grid: { color: "#f7d3d3" }, beginAtZero: false },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

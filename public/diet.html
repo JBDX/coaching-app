@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diet - JB CORP</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #E63946;
+      --beige: #FFFAF3;
+      --black: #1D1D1B;
+      --grey: #f6f7fa;
+    }
+    body {
+      margin: 0;
+      background: var(--beige);
+      font-family: 'Montserrat', Arial, sans-serif;
+      color: var(--black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    h1 {
+      margin: 2.2rem 0 1.2rem 0;
+      font-size: 1.35rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .diet-header {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      align-items: center;
+      gap: 1.3rem;
+      justify-content: center;
+      margin-bottom: 2.3rem;
+    }
+    .diet-header label {
+      font-weight: 600;
+    }
+    .diet-header input[type="date"] {
+      padding: 0.6rem 1rem;
+      border-radius: 0.7rem;
+      border: 1.1px solid #d0d0d0;
+      background: #fff;
+      font-size: 1rem;
+      font-family: 'Montserrat', Arial, sans-serif;
+      outline: none;
+      transition: border 0.15s;
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto 2.1rem auto;
+    }
+    .card-diet {
+  background: #fff;
+  border-radius: 1.3rem;
+  box-shadow: 0 2px 18px rgba(27,27,27,0.08);
+  padding: 1.3rem 1.3rem 1.3rem 1.3rem;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.2rem;
+  min-height: 170px;
+  min-width: 270px;
+  position: relative;
+  transition: box-shadow 0.15s, transform 0.13s;
+  max-width: 430px;
+  width: 100%;
+}
+   .card-diet .icon {
+  font-size: 2.1rem;
+  color: var(--red);
+  margin-top: 0.18rem;
+}
+    .diet-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+}
+    .card-title {
+  font-weight: 700;
+  font-size: 1.11rem;
+  color: var(--black);
+  margin-bottom: 0.21rem;
+}
+   .card-textarea {
+  border: none;
+  background: #f6f7fa;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.8rem;
+  font-size: 1rem;
+  width: 100%;
+  font-family: 'Montserrat', Arial, sans-serif;
+  margin-bottom: 0.08rem;
+  color: var(--black);
+  outline: none;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(230,57,70,0.03);
+  transition: border 0.12s, background 0.12s;
+  resize: vertical;
+  min-height: 2.5rem;
+  max-height: 5.5rem;
+  box-sizing: border-box;
+}
+   .card-textarea:focus {
+  background: #fff0f2;
+  border: 1.3px solid var(--red);
+}
+    .macro {
+  background: #f9f5f5;
+  border-radius: 0.5rem;
+  padding: 0.19rem 0.6rem;
+  font-size: 0.95rem;
+  color: var(--black);
+  border: 1px solid #ececec;
+  width: 70px;
+  text-align: center;
+  box-sizing: border-box;
+}
+.macro:focus {
+  border: 1.5px solid var(--red);
+}
+.photo-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.2rem;
+  width: 100%;
+}
+.photo-row input[type="file"] {
+  width: 100%;
+  max-width: 180px;
+  font-size: 0.96rem;
+}
+    .save-btn {
+      margin: 2.1rem 0 1.5rem 0;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 1.1rem;
+      font-weight: 700;
+      font-size: 1.15rem;
+      padding: 1rem 2.1rem;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      box-shadow: 0 2px 14px rgba(230,57,70,0.06);
+      transition: background 0.14s, transform 0.11s;
+    }
+    .save-btn:hover {
+      background: #c82b36;
+      transform: scale(1.018);
+    }
+    @media (max-width: 700px) {
+    .cards-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+      .diet-header { flex-direction: column; align-items: flex-start; gap: 0.6rem;}
+       .card-diet { flex-direction: column; min-width: unset; max-width: 98vw;}
+    }
+  </style>
+</head>
+<body>
+  <h1>Diet du jour</h1>
+  <div class="diet-header">
+    <label for="date">Date :</label>
+    <input type="date" id="date" />
+  </div>
+  <form id="dietForm">
+    <div class="cards-grid">
+      <!-- Petit-déjeuner -->
+      <div class="card-diet">
+        <div class="icon">🍞</div>
+        <div class="diet-content">
+          <div class="card-title">Petit-déjeuner</div>
+          <textarea class="card-textarea" id="pdj_desc" rows="2" placeholder="Décris ton repas..."></textarea>
+          <div class="macros-row">
+            <input class="macro" type="number" id="pdj_prot" placeholder="Prot" min="0" /> 
+            <input class="macro" type="number" id="pdj_gluc" placeholder="Gluc" min="0" />
+            <input class="macro" type="number" id="pdj_lip" placeholder="Lip" min="0" />
+          </div>
+          <div class="photo-row">
+            <label style="font-size:0.93rem;color:#777;">Photo :</label>
+            <input type="file" id="pdj_photo" accept="image/*" style="font-size:0.96rem;">
+          </div>
+        </div>
+      </div>
+      <!-- Déjeuner -->
+      <div class="card-diet">
+        <div class="icon">🥗</div>
+        <div class="diet-content">
+          <div class="card-title">Déjeuner</div>
+          <textarea class="card-textarea" id="dej_desc" rows="2" placeholder="Décris ton repas..."></textarea>
+          <div class="macros-row">
+            <input class="macro" type="number" id="dej_prot" placeholder="Prot" min="0" /> 
+            <input class="macro" type="number" id="dej_gluc" placeholder="Gluc" min="0" />
+            <input class="macro" type="number" id="dej_lip" placeholder="Lip" min="0" />
+          </div>
+          <div class="photo-row">
+            <label style="font-size:0.93rem;color:#777;">Photo :</label>
+            <input type="file" id="dej_photo" accept="image/*" style="font-size:0.96rem;">
+          </div>
+        </div>
+      </div>
+      <!-- Dîner -->
+      <div class="card-diet">
+        <div class="icon">🍝</div>
+        <div class="diet-content">
+          <div class="card-title">Dîner</div>
+          <textarea class="card-textarea" id="din_desc" rows="2" placeholder="Décris ton repas..."></textarea>
+          <div class="macros-row">
+            <input class="macro" type="number" id="din_prot" placeholder="Prot" min="0" /> 
+            <input class="macro" type="number" id="din_gluc" placeholder="Gluc" min="0" />
+            <input class="macro" type="number" id="din_lip" placeholder="Lip" min="0" />
+          </div>
+          <div class="photo-row">
+            <label style="font-size:0.93rem;color:#777;">Photo :</label>
+            <input type="file" id="din_photo" accept="image/*" style="font-size:0.96rem;">
+          </div>
+        </div>
+      </div>
+      <!-- Collation -->
+      <div class="card-diet">
+        <div class="icon">🍌</div>
+        <div class="diet-content">
+          <div class="card-title">Collation</div>
+          <textarea class="card-textarea" id="col_desc" rows="2" placeholder="Décris ta collation..."></textarea>
+          <div class="macros-row">
+            <input class="macro" type="number" id="col_prot" placeholder="Prot" min="0" /> 
+            <input class="macro" type="number" id="col_gluc" placeholder="Gluc" min="0" />
+            <input class="macro" type="number" id="col_lip" placeholder="Lip" min="0" />
+          </div>
+          <div class="photo-row">
+            <label style="font-size:0.93rem;color:#777;">Photo :</label>
+            <input type="file" id="col_photo" accept="image/*" style="font-size:0.96rem;">
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="save-btn" type="submit">Enregistrer la journée</button>
+    <div id="dietMsg" style="text-align:center; margin-top:1rem; min-height:1.5em;"></div>
+  </form>
+  <script>
+    // Pré-remplir la date à aujourd'hui
+    window.onload = function() {
+      document.getElementById('date').value = new Date().toISOString().split('T')[0];
+    };
+
+    document.getElementById('dietForm').onsubmit = function(e) {
+      e.preventDefault();
+      // Tu peux ici ajouter ta logique d'enregistrement
+      document.getElementById('dietMsg').textContent = 'Données sauvegardées (simulation)';
+      setTimeout(() => document.getElementById('dietMsg').textContent = '', 1800);
+    };
+  </script>
+</body>
+</html>

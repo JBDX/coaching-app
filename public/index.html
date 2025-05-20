@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JB CORP - Coaching</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #E63946;
+      --beige: #FFFAF3;
+      --black: #1D1D1B;
+      --soft: #F9F6F2;
+      --grey: #F3F3F3;
+    }
+    body {
+      background: var(--beige);
+      margin: 0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      color: var(--black);
+    }
+    .header {
+      width: 100vw;
+      padding: 2rem 0.7rem 1.4rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      border-radius: 0 0 2.3rem 2.3rem;
+      box-shadow: 0 2px 24px rgba(27,27,27,0.07);
+      max-width: 1000px;
+    }
+    .brand {
+      font-size: 1.48rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+    .brand span {
+      color: var(--red);
+    }
+    .header-btn {
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 1.2rem;
+      font-weight: 700;
+      font-size: 1.01rem;
+      padding: 0.82rem 1.3rem;
+      cursor: pointer;
+      transition: background 0.13s;
+      box-shadow: 0 1px 6px rgba(230,57,70,0.07);
+    }
+    .header-btn:hover {
+      background: #c82b36;
+    }
+
+    .landing-main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      padding: 0 1rem;
+    }
+    .main-tag {
+      display: inline-block;
+      background: var(--grey);
+      color: var(--red);
+      border-radius: 2rem;
+      padding: 0.33rem 1.2rem;
+      font-size: 1.01rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      margin-bottom: 1.4rem;
+    }
+    .main-title {
+      font-size: 2.7rem;
+      font-weight: 800;
+      text-align: center;
+      margin-top: 1rem;
+      margin-bottom: 1.6rem;
+      letter-spacing: -1.3px;
+      line-height: 1.06;
+    }
+    .main-title span {
+      color: var(--red);
+    }
+    .main-desc {
+      font-size: 1.16rem;
+      font-weight: 500;
+      color: #3b3b3b;
+      max-width: 420px;
+      text-align: center;
+      margin: 0 auto 2.3rem auto;
+      line-height: 1.45;
+    }
+    .cta-btn {
+      margin-top: 1.7rem;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 1.6rem;
+      font-weight: 700;
+      font-size: 1.18rem;
+      padding: 1.09rem 2.3rem;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      box-shadow: 0 2px 20px rgba(230,57,70,0.09);
+      transition: background 0.13s, transform 0.12s;
+    }
+    .cta-btn:hover {
+      background: #c82b36;
+      transform: scale(1.035);
+    }
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2.1rem;
+      margin-top: 3.4rem;
+      max-width: 970px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 3rem;
+    }
+    .feature-card {
+      background: #fff;
+      border-radius: 1.3rem;
+      box-shadow: 0 1px 14px rgba(27,27,27,0.04);
+      padding: 1.2rem 1.6rem;
+      min-width: 220px;
+      max-width: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.61rem;
+    }
+    .feature-icon {
+      font-size: 2.2rem;
+      margin-bottom: 0.2rem;
+    }
+    .feature-title {
+      font-weight: 700;
+      font-size: 1.08rem;
+      color: var(--black);
+    }
+    .feature-desc {
+      color: #777;
+      font-size: 0.98rem;
+      font-weight: 500;
+    }
+    @media (max-width: 700px) {
+      .header, .features { max-width: 98vw;}
+      .main-title { font-size: 2rem;}
+      .feature-card { min-width: 160px; max-width: 99vw;}
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="brand">JB<span>CORP</span></div>
+    <button class="header-btn" onclick="window.location.href='register.html'">Créer mon compte</button>
+  </div>
+  <div class="landing-main">
+    <div class="main-title">
+      Le <span>coaching</span> ultra<br>
+      <span>personnalisé</span> démarre ici
+    </div>
+    <div class="main-desc">
+      Plateforme 100% personnalisée pour tes séances, ton suivi, tes progrès.  
+      Prêt à booster tes performances et à tout enregistrer comme un pro ?
+    </div>
+    <button class="cta-btn" onclick="window.location.href='register.html'">
+      Démarrer mon suivi
+    </button>
+
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">💪</div>
+        <div class="feature-title">Plans sur-mesure</div>
+        <div class="feature-desc">Séances adaptées à tes objectifs, sport, matériel et niveau.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Suivi & progrès</div>
+        <div class="feature-desc">Visualise l’évolution de chaque entraînement et tes statistiques.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">Espace privé & sécurisé</div>
+        <div class="feature-desc">Toutes tes données stockées en sécurité et accessibles en 1 clic.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <div class="feature-title">Coach dispo 24h/24</div>
+        <div class="feature-desc">Questions, doutes, motivation… Ton coach répond sur la plateforme !</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

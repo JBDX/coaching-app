@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mensurations - JB CORP</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #E63946;
+      --beige: #FFFAF3;
+      --black: #1D1D1B;
+      --blue: #669BBC;
+      --grey: #f6f7fa;
+    }
+    body {
+      margin: 0;
+      background: var(--beige);
+      font-family: 'Montserrat', Arial, sans-serif;
+      color: var(--black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    h1 {
+      margin: 2.2rem 0 1.2rem 0;
+      font-size: 1.35rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .mensu-header {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      align-items: center;
+      gap: 1.3rem;
+      justify-content: center;
+      margin-bottom: 2.3rem;
+    }
+    .mensu-header label {
+      font-weight: 600;
+    }
+    .mensu-header input[type="date"] {
+      padding: 0.6rem 1rem;
+      border-radius: 0.7rem;
+      border: 1.1px solid #d0d0d0;
+      background: #fff;
+      font-size: 1rem;
+      font-family: 'Montserrat', Arial, sans-serif;
+      outline: none;
+      transition: border 0.15s;
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 2rem;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto 2.1rem auto;
+    }
+    .card-mensu {
+      background: #fff;
+      border-radius: 1.3rem;
+      box-shadow: 0 2px 18px rgba(27,27,27,0.08);
+      padding: 1.4rem 1.1rem 1.2rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      min-height: 120px;
+      position: relative;
+      transition: box-shadow 0.15s, transform 0.13s;
+    }
+    .card-mensu .icon {
+      font-size: 2.1rem;
+      margin-bottom: 0.25rem;
+      color: var(--red);
+    }
+    .card-title {
+      font-weight: 700;
+      font-size: 1.03rem;
+      color: var(--black);
+      margin-bottom: 0.18rem;
+      text-align: center;
+    }
+    .card-input {
+      border: none;
+      background: #f6f7fa;
+      padding: 0.6rem 0.8rem;
+      border-radius: 0.8rem;
+      font-size: 1.17rem;
+      width: 70%;
+      text-align: center;
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin-bottom: 0.14rem;
+      font-weight: 700;
+      color: var(--black);
+      outline: none;
+      box-shadow: 0 1px 4px rgba(230,57,70,0.03);
+      transition: border 0.12s, background 0.12s;
+    }
+    .card-input:focus {
+      background: #fff0f2;
+      border: 1.3px solid var(--red);
+    }
+    .unit-label {
+      font-size: 0.91rem;
+      color: #a0a0a0;
+    }
+    .save-btn {
+      margin: 2.1rem 0 1.5rem 0;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 1.1rem;
+      font-weight: 700;
+      font-size: 1.15rem;
+      padding: 1rem 2.1rem;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      box-shadow: 0 2px 14px rgba(230,57,70,0.06);
+      transition: background 0.14s, transform 0.11s;
+    }
+    .save-btn:hover {
+      background: #c82b36;
+      transform: scale(1.018);
+    }
+    @media (max-width: 700px) {
+      .cards-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+      .mensu-header { flex-direction: column; align-items: flex-start; gap: 0.6rem;}
+    }
+  </style>
+</head>
+<body>
+  <h1>Mensurations du jour</h1>
+  <div class="mensu-header">
+    <label for="date">Date :</label>
+    <input type="date" id="date" />
+  </div>
+  <form id="mensuForm">
+    <div class="cards-grid">
+      <div class="card-mensu">
+        <div class="icon">🦒</div>
+        <div class="card-title">Cou</div>
+        <input class="card-input" id="cou" type="number" min="0" step="0.1" placeholder="-" />
+        <span class="unit-label">cm</span>
+      </div>
+      <div class="card-mensu">
+        <div class="icon">🏋️‍♂️</div>
+        <div class="card-title">Épaules</div>
+        <input class="card-input" id="epaules" type="number" min="0" step="0.1" placeholder="-" />
+        <span class="unit-label">cm</span>
+      </div>
+      <div class="card-mensu">
+        <div class="icon">💪</div>
+        <div class="card-title">Torse</div>
+        <input class="card-input" id="torse" type="number" min="0" step="0.1" placeholder="-" />
+        <span class="unit-label">cm</span>
+      </div>
+      <div class="card-mensu">
+        <div class="icon">🤚</div>
+        <div class="card-title">Bras G</div>
+        <input class="card-input" id="brasG" type="number" min="0" step="0.1" placeholder="-" />
+        <span class="unit-label">cm</span>
+      </div>
+      <div class="card-mensu">
+        <div class="icon">✋</div>
+        <div class="card-title">Bras D</div>
+        <input class="card-input" id="brasD" type="number" min="0" step="0.1" placeholder="-" />
+        <span class="unit-label">cm</span>
+      </div>
+      <div class="card-mensu">
+        <div class="icon">🦾</div>
+        <div class="card-title">Avant-bras G</div>
+        <input class="card-input" id="avg" type="number" min="0" step="0.1" placeholder="-" />
+        <span class="unit-label">cm</span>
+      </div>
+      <div class="card-mensu">
+        <div class="icon">🦿</div>
+        <div class="card-title">Avant-bras D</div>
+        <input class="card-input" id="avd" type="number" min="0" step="0.1" placeholder="-" />
+        <span class="unit-label">cm</span>
+      </div>
+      <div class="card-mensu">
+        <div class="icon">👖</div>
+        <div class="card-title">Taille</div>
+        <input class="card-input" id="taille" type="number" min="0" step="0.1" placeholder="-" />
+        <span class="unit-label">cm</span>
+      </div>
+      <div class="card-mensu">
+        <div class="icon">🦵</div>
+        <div class="card-title">Cuisses</div>
+        <input class="card-input" id="cuisses" type="number" min="0" step="0.1" placeholder="-" />
+        <span class="unit-label">cm</span>
+      </div>
+      <div class="card-mensu">
+        <div class="icon">🥾</div>
+        <div class="card-title">Mollets</div>
+        <input class="card-input" id="mollets" type="number" min="0" step="0.1" placeholder="-" />
+        <span class="unit-label">cm</span>
+      </div>
+    </div>
+    <button class="save-btn" type="submit">Enregistrer les mensurations</button>
+    <div id="mensuMsg" style="text-align:center; margin-top:1rem; min-height:1.5em;"></div>
+  </form>
+  <script>
+    // Pré-remplir la date à aujourd'hui
+    window.onload = function() {
+      document.getElementById('date').value = new Date().toISOString().split('T')[0];
+    };
+
+    document.getElementById('mensuForm').onsubmit = function(e) {
+      e.preventDefault();
+      // Ici tu peux adapter pour sauvegarder vers API ou localStorage
+      document.getElementById('mensuMsg').textContent = 'Données sauvegardées (simulation)';
+      setTimeout(() => document.getElementById('mensuMsg').textContent = '', 1800);
+    };
+  </script>
+</body>
+</html>

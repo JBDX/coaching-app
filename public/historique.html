@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historique des séances - JB CORP</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #E63946;
+      --beige: #FFFAF3;
+      --black: #1D1D1B;
+      --grey: #f5f6fa;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: var(--beige);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.1rem 0 1.5rem 0;
+    }
+    h1 {
+      font-size: 1.39rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 2.1rem;
+      text-align: center;
+      letter-spacing: 0.06em;
+    }
+    .history-list {
+      width: 100vw;
+      max-width: 410px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.35rem;
+      align-items: center;
+    }
+    .history-card {
+      background: #fff;
+      border-radius: 1.4rem;
+      box-shadow: 0 2px 14px rgba(27,27,27,0.06);
+      padding: 1.2rem 1.1rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      transition: box-shadow 0.12s, transform 0.13s;
+      cursor: pointer;
+    }
+    .history-card:hover {
+      box-shadow: 0 7px 24px rgba(230,57,70,0.13);
+      transform: scale(1.016);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.12rem;
+    }
+    .session-name {
+      font-weight: 700;
+      font-size: 1.06rem;
+      color: var(--red);
+      letter-spacing: 0.02em;
+    }
+    .date {
+      color: var(--black);
+      font-size: 0.98rem;
+      font-weight: 500;
+    }
+    .motfat {
+      color: var(--black);
+      font-size: 0.97rem;
+      margin-bottom: 0.15rem;
+    }
+    .see-details-btn {
+      margin-top: 0.4rem;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 0.9rem;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.6rem 0;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.12s, transform 0.12s;
+    }
+    .see-details-btn:hover {
+      background: #c82b36;
+      transform: scale(1.015);
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.07rem; }
+      .history-card { padding: 1rem 0.4rem 1rem 0.4rem;}
+    }
+  </style>
+</head>
+<body>
+  <h1>Historique des séances</h1>
+  <div id="history" class="history-list"></div>
+  <script>
+    const token = localStorage.getItem('token');
+    if (!token) window.location.href = '/login.html';
+
+    fetch('/api/logs', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    })
+    .then(r => r.json())
+    .then(data => {
+      const container = document.getElementById('history');
+      if (!Array.isArray(data) || data.length === 0) {
+        container.innerHTML = '<div style="color: #888; margin-top:2.7rem;">Aucune séance enregistrée.</div>';
+        return;
+      }
+      data.forEach((log, i) => {
+        const card = document.createElement('div');
+        card.className = 'history-card';
+        card.innerHTML = `
+          <div class="card-header">
+            <span class="session-name">${log.session || ''}</span>
+            <span class="date">${log.date || ''}</span>
+          </div>
+          <div class="motfat">
+            Motivation : <b>${log.motivation || '-'}</b> | Fatigue : <b>${log.fatigue || '-'}</b>
+          </div>
+          <button class="see-details-btn" onclick="openDetail(${i})">Voir détail</button>
+        `;
+        container.appendChild(card);
+      });
+
+      // Sauvegarder toutes les séances côté JS
+      window._allLogs = data;
+    })
+    .catch(() => {
+      document.getElementById('history').innerHTML = '<div style="color: var(--red); margin-top:2.7rem;">Erreur lors du chargement.</div>';
+    });
+
+    // Détail séance en popup
+    function openDetail(idx) {
+      const log = window._allLogs[idx];
+      if (!log) return;
+      // Créer le contenu du détail
+      let html = `
+        <div style="font-weight:700;font-size:1.15rem;color:var(--red);margin-bottom:0.4rem;">${log.session || ''}</div>
+        <div style="color:var(--black);margin-bottom:0.15rem;">${log.date || ''}</div>
+        <div style="margin-bottom:0.1rem;font-size:1rem;">
+          Motivation : <b>${log.motivation || '-'}</b> | Fatigue : <b>${log.fatigue || '-'}</b>
+        </div>
+        <div style="font-size:0.97rem;margin-bottom:0.4rem;">
+          <div><b>Avant :</b> ${log.preNote || 'RAS'}</div>
+          <div><b>Après :</b> ${log.postNote || 'RAS'}</div>
+        </div>
+        <ul style="list-style:none;padding:0;">
+          ${(Array.isArray(log.exercices) ? log.exercices.map(exo => `
+            <li style="margin-bottom:1.2rem;">
+              <div style="font-weight:600;color:var(--black);font-size:1.01rem;margin-bottom:0.14rem;">${exo.nom || ''}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:0.65rem;margin:0.22rem 0;">
+                ${(Array.isArray(exo.series) ? exo.series.map(serie =>
+                  `<span style="background:var(--beige);color:var(--black);border-radius:0.5rem;padding:0.14rem 0.6rem;font-size:0.96rem;font-weight:600;">
+                    ${serie.reps || '-'} reps @ ${serie.weight || '-'}kg (RPE ${serie.rpe || '-'})
+                  </span>`
+                ).join('') : '')}
+              </div>
+              ${exo.note ? `<div style="font-size:0.93rem;color:#8d8d8d;margin-top:0.08rem;font-style:italic;">${exo.note}</div>` : ''}
+            </li>
+          `).join('') : '')}
+        </ul>
+        <button onclick="closeDetail()" style="margin-top:1.1rem;background:var(--red);color:#fff;border:none;border-radius:1rem;font-weight:700;font-size:1rem;padding:0.6rem 1.2rem;cursor:pointer;box-shadow:0 1px 6px rgba(230,57,70,0.07);">Fermer</button>
+      `;
+      let modal = document.createElement('div');
+      modal.id = 'detailModal';
+      modal.style.position = 'fixed';
+      modal.style.inset = '0';
+      modal.style.background = 'rgba(29,29,27,0.23)';
+      modal.style.display = 'flex';
+      modal.style.alignItems = 'center';
+      modal.style.justifyContent = 'center';
+      modal.style.zIndex = '99';
+      modal.innerHTML = `<div style="background:#fff;padding:2rem 1.3rem 1.3rem 1.3rem;border-radius:1.5rem;max-width:420px;width:95vw;box-shadow:0 7px 36px rgba(27,27,27,0.10);animation:showmodal 0.2s;">
+        ${html}
+      </div>`;
+      document.body.appendChild(modal);
+    }
+    function closeDetail() {
+      const modal = document.getElementById('detailModal');
+      if (modal) modal.remove();
+    }
+  </script>
+</body>
+</html>

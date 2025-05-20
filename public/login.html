@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion - JB CORP</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #E63946;
+      --beige: #FFFAF3;
+      --black: #1D1D1B;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: var(--beige);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: #fff;
+      border-radius: 2.3rem;
+      box-shadow: 0 6px 32px rgba(0,0,0,0.07);
+      max-width: 350px;
+      width: 96%;
+      padding: 2.7rem 1.3rem 2rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.1rem;
+    }
+    .logo-wrapper {
+      margin-bottom: 0.3rem;
+      width: 62px;
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-wrapper img {
+      width: 58px;
+      height: 58px;
+      display: block;
+      border-radius: 13px;
+    }
+    h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0 0 0.13em 0;
+      color: var(--black);
+      text-align: center;
+      letter-spacing: 0.6px;
+    }
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-top: 0.1rem;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.22rem;
+    }
+    label {
+      color: var(--black);
+      font-weight: 600;
+      font-size: 0.98rem;
+      margin-bottom: 0.03rem;
+      letter-spacing: 0.01em;
+    }
+    input[type=email],
+    input[type=password] {
+      border: 1.5px solid #e7e7e7;
+      background: #f7f7f7;
+      padding: 0.92rem 1.05rem;
+      font-size: 1.07rem;
+      border-radius: 0.85rem;
+      color: var(--black);
+      font-weight: 500;
+      outline: none;
+      box-shadow: none;
+      transition: border 0.18s, background 0.14s;
+    }
+    input[type=email]:focus,
+    input[type=password]:focus {
+      border: 1.5px solid var(--red);
+      background: #fff;
+    }
+    button {
+      margin-top: 0.3rem;
+      padding: 1rem;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 1.1rem;
+      font-weight: 700;
+      font-size: 1.09rem;
+      cursor: pointer;
+      letter-spacing: 0.15px;
+      transition: background 0.14s, transform 0.13s;
+      box-shadow: 0 2px 12px rgba(230,57,70,0.06);
+    }
+    button:hover {
+      background: #c82b36;
+      transform: scale(1.012);
+    }
+    .forgot-link {
+      text-align: center;
+      margin-top: 0.9rem;
+    }
+    .forgot-link a {
+      color: var(--red);
+      text-decoration: underline;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: color 0.14s;
+    }
+    .forgot-link a:hover {
+      color: var(--black);
+    }
+    #errorMsg {
+      min-height: 1.1em;
+      margin-top: 0.5rem;
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--red);
+    }
+    @media (max-width: 500px) {
+      .container { padding: 1.15rem 0.2rem 1.3rem 0.2rem;}
+      h2 { font-size: 1.06rem;}
+      .logo-wrapper img { width: 42px; height: 42px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-wrapper">
+      <img src="logo rouge notion.png" alt="Logo JB CORP">
+    </div>
+    <h2>Connexion à JB CORP</h2>
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="monmail@email.com" required />
+      </div>
+      <div class="input-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" placeholder="Mot de passe" required />
+      </div>
+      <button type="submit">Se connecter</button>
+      <div id="errorMsg"></div>
+    </form>
+    <div class="forgot-link">
+      <a href="forgot.html">Mot de passe oublié&nbsp;?</a>
+    </div>
+  </div>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const errorMsg = document.getElementById('errorMsg');
+
+      errorMsg.textContent = "";
+
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem('token', data.token);
+          window.location.href = '/dashboard.html';
+        } else {
+          errorMsg.textContent = data.message || 'Erreur de connexion';
+        }
+      } catch (error) {
+        errorMsg.textContent = 'Erreur de serveur';
+      }
+    });
+  </script>
+</body>
+</html>
